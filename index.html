@@ -766,6 +766,7 @@
                 grid-template-columns: 1fr;
                 gap: 30px;
             }
+
 /* 💡【解決圖三右側衝出問題】不要鎖死固定像素，改用 Grid 來做手機橫向並排 */
             .profile-left {
                 display: grid;
@@ -823,7 +824,7 @@
                 width: 100%;
             }
 
-            /* ✨ 【新修改】手機版「查看更多插畫」全面改成 2 欄網格(Grid)呈現 */
+            
             /* ✨ 【新修改】手機版「查看更多插畫」全面改成 2 欄網格(Grid)呈現 */
 @media (max-width: 768px) {
 
@@ -877,19 +878,19 @@
     }
 
     .work-sub-images {
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 6px !important;
-        margin-top: 12px !important;
+        grid-template-columns: repeat(3, 1fr) ;
+        gap: 6px ;
+        margin-top: 12px ;
     }
 
     .work-thumb {
-        aspect-ratio: 1 / 1 !important;
-        height: auto !important;
+        aspect-ratio: 1 / 1 ;
+        height: auto ;
     }
 
     /* 讓右側文字區塊更穩定 */
     .works-grid > div:not(.work-card) {
-        width: 100% !important;
+        width: 100% ;
     }
 
     /* 動畫製作區塊額外間距 */
@@ -916,6 +917,7 @@
     .graphic-art-row.full-flow {
         gap: 20px !important;
     }
+    
 }@media (max-width: 768px) {
     /* 強制所有作品區塊在手機上垂直排列 */
     .graphic-art-row {
@@ -949,33 +951,31 @@
 
 /* 確保 Media Query 放在 CSS 的最下方 */
 @media (max-width: 768px) {
-    /* 1. 強制讓網格永遠維持 3 欄，且不會溢出螢幕 */
-    .sub-works-grid {
-        display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 10px !important;
+    /* 1. 讓容器變成水平滾動模式 */
+    .work-sub-images {
+        display: flex !important;       /* 讓內部圖片水平排列 */
+        flex-direction: row !important;
+        overflow-x: auto !important;    /* 允許水平捲動 */
+        overflow-y: hidden !important;  /* 禁止垂直捲動 */
+        gap: 10px !important;           /* 圖片間距 */
         width: 100% !important;
-        margin-top: 15px !important;
+        padding-bottom: 10px !important;/* 防止滾動條遮住圖片底部 */
+        -webkit-overflow-scrolling: touch; /* 讓手機滑動體驗更滑順 */
     }
 
-    /* 2. 強制讓每個方格變成正方形 */
-    .sub-works-grid .placeholder-img {
-        width: 100% !important;
-        aspect-ratio: 1 / 1 !important; /* 正方形核心設定 */
-        overflow: hidden !important;
+    /* 2. 強制圖片框為正方形，且給予固定寬度 */
+    .work-sub-images .work-thumb {
+        flex: 0 0 30% !important;       /* 每個框佔容器 30% 寬度，這樣一次能看見約 3 個 */
+        aspect-ratio: 1 / 1 !important;  /* 強制正方形 */
+        min-width: 80px !important;     /* 設定最小寬度，避免縮太小 */
         border: 1px dashed var(--primary-color) !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        max-height: 135px;
     }
 
-    /* 3. 確保內部圖片完全貼合正方形 */
-    .sub-works-grid .placeholder-img img {
+    /* 3. 確保圖片填滿正方形 */
+    .work-sub-images .work-thumb img {
         width: 100% !important;
         height: 100% !important;
         object-fit: cover !important;
-        display: block !important;
     }
 }
 
