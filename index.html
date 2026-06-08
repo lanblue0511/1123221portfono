@@ -903,6 +903,28 @@
     box-sizing: border-box;
 }
 
+.work-sub-images {
+        display: flex !important;
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
+        gap: 12px;
+        margin-top: 12px;
+        padding-bottom: 10px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .work-sub-images .placeholder-img,
+    .work-sub-images .work-thumb {
+        flex: 0 0 110px !important;
+        aspect-ratio: 4 / 3 !important;
+    }
+
+    /* 確保文字區塊不會被圖片推擠 */
+    .works-grid > div:not(.work-card) {
+        width: 100% !important;
+        margin-top: 15px;
+    }
+
     /* 讓右側文字區塊更穩定 */
     .works-grid > div:not(.work-card) {
         width: 100% ;
