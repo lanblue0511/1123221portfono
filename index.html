@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTFOLIO | 藍乙甄個人作品集</title>
+    <style>
+        /* ----------------------------------
+         * 全域樣式與配色 
+         * ---------------------------------- */
+        :root {
+            --bg-color: #2b3643;       /* 深灰藍底色 */
+            --primary-color: #a1c4d4;  /* 粉藍裝飾色 */
+            --text-color: #ffffff;     /* 白色文字 */
+            --border-style: 2px dashed #a1c4d4; /* 佔位框樣式 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            padding-bottom: 60px;
+        }
+
+        /* ----------------------------------
+         * 裝飾性星芒元件 (四角星形狀)
+         * ---------------------------------- */
+        .star-decor {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: var(--primary-color);
+            clip-path: polygon(50% 0%, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0% 50%, 35% 35%);
+            margin: 0 5px;
+        }
+
+        /* ----------------------------------
+         * 頂部導覽列 & 動畫式選單
+         * ---------------------------------- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background-color: rgba(43, 54, 67, 0.95);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            border-bottom: 2px solid var(--primary-color);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--primary-color);
+        }
+
+/* ----------------------------------
+         * 動漫插畫專用控制項 (「更多作品」切換)
+         * ---------------------------------- */
+        .more-works-btn-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .custom-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 12px 35px;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .custom-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 15px rgba(161, 196, 212, 0.4);
+        }
+
+/* 底部收合按鈕容器 - 加強置中 */
+.footer-close-container {
+    text-align: center;
+    margin: 40px 0 20px 0;
+    width: 100%;
+}
+
+/* 底部收合按鈕專用微調樣式 */
+.collapse-btn-footer {
+    margin-top: 30px;
+    font-size: 15px;
+    padding: 10px 35px;     /* 加大左右內距讓按鈕更顯眼 */
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+        /* 更多作品內容區塊（預設隱藏） */
+        .gallery-view-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            border-top: 1px dashed rgba(161, 196, 212, 0.3);
+            padding-top: 40px;
+        }
+
+        /* 啟動顯示時的樣式 */
+        .gallery-view-section.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 更多作品微縮九宮格網格 (電腦版維持3欄) */
+.more-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);   /* 桌面 3 欄 */
+    gap: 30px;                               /* 加大間距更舒服 */
+    margin-bottom: 40px;
+}
+
+.gallery-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;                    /* 關鍵：讓所有卡片等高 */
+}
+
+.gallery-img {
+    width: 100%;           /* 寬度隨網格調整 */
+    aspect-ratio: 2 / 3;   /* 設定你想要的固定長寬比（例如 2:3） */
+    overflow: hidden;      /* 確保超出框框的部分被裁切 */
+    position: relative;    /* 方便定位 */
+}
+
+/* 確保內部圖片填滿該比例 */
+.gallery-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;     /* 強制圖片填滿容器，並根據比例裁切，不會變形 */
+    display: block;
+}
+
+        .placeholder-text {
+            border: 1px dashed rgba(255, 255, 255, 0.4);
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.02);
+            color: #dddddd;
+            line-height: 1.8;
+        }
+
+        /* 電腦版選單 */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        /* 電腦版選單 */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        html {
+        scroll-behavior: smooth;
+        }
+        
+
+        /* 漢堡選單按鈕 (手機版專用) */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background-color: var(--primary-color);
+            transition: 0.3s;
+        }
+
+        /* ----------------------------------
+         * 封面區塊 (Hero Section)
+         * ---------------------------------- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            border-bottom: 1px solid rgba(161, 196, 212, 0.3);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero-title-box {
+            border: 4px solid var(--primary-color);
+            padding: 40px 60px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 70px;
+            letter-spacing: 10px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-top: 20px;
+            color: var(--primary-color);
+            letter-spacing: 4px;
+        }
+
+        /* ----------------------------------
+         * 內容區塊通用樣式
+         * ---------------------------------- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .section-title span.num {
+            font-size: 45px;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        .subsection-title {
+            font-size: 22px;
+            color: #ffffff;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            letter-spacing: 1px;
+        }
+
+        /* 佔位框樣式 */
+        .placeholder-img {
+            border: var(--border-style);
+            background-color: rgba(161, 196, 212, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-color);
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .placeholder-img:hover {
+            transform: scale(1.02);
+            background-color: rgba(161, 196, 212, 0.12);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .placeholder-text {
+            border: 1px dashed rgba(255, 255, 255, 0.4);
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.02);
+            color: #dddddd;
+            line-height: 1.8;
+        }
+
+        /* ----------------------------------
+         * 01 個人簡介區塊
+         * ---------------------------------- */
+/* ----------------------------------
+         * ✨【修正重點】01 個人簡介區塊網格系統（電腦與中視窗）
+         * ---------------------------------- */
+        .profile-grid {
+            display: grid;
+            /* 改為 1.25欄 : 2.75欄，讓左邊寬度更有彈性，縮放時跟著同比例放大縮小 */
+            grid-template-columns: 1.25fr 2.75fr;
+            gap: 40px; 
+            align-items: start;
+        }
+
+        .profile-left {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+        }
+
+        .profile-avatar {
+            width: 100%;
+            aspect-ratio: 1/1; /* 完美正方形 */
+            border-radius: 20px;
+        }
+
+        .profile-info {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr); 
+            gap: 15px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .skill-icon-placeholder {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        /* ----------------------------------
+         * ✨【新樣式】02 平面設計：藝術感滿版交錯展示區 
+         * ---------------------------------- */
+        .graphic-showcase-container {
+            width: 100%;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 120px; /* 作品與作品之間的呼吸間距 */
+        }
+
+        /* 滾動淡入核心基礎類 (JavaScript 觸發) */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s cubic-bezier(0.215, 0.610, 0.355, 1), 
+                        transform 1s cubic-bezier(0.215, 0.610, 0.355, 1);
+            will-change: transform, opacity;
+        }
+
+        /* 觸發後的完全顯示狀態 */
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 滿版交錯式大網格 */
+        .graphic-art-row {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            align-items: center;
+            gap: 40px;
+            width: 100%;
+        }
+
+        .graphic-art-media {
+            grid-column: span 7; /* 大圖片佔 7/12 寬 */
+            position: relative;
+        }
+
+        .graphic-art-desc {
+            grid-column: span 5; /* 文字描述佔 5/12 寬 */
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 奇數行反轉（圖右字左） */
+        .graphic-art-row.reverse .graphic-art-media {
+            grid-column: 6 / span 7;
+            grid-row: 1;
+        }
+        
+        .graphic-art-row.reverse .graphic-art-desc {
+            grid-column: 1 / span 5;
+            grid-row: 1;
+        }
+
+        /* 第三個作品：特大震撼滿版流 */
+        .graphic-art-row.full-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .graphic-art-row.full-flow .graphic-art-media {
+            width: 100%;
+        }
+
+        .graphic-art-row.full-flow .graphic-art-desc {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* 藝術滿版主圖尺寸控管 */
+        .art-main-img {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            border: 1px solid rgba(161, 196, 212, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .art-main-img-tall {
+            width: 100%;
+            aspect-ratio: 16 / 9; /* 滿版展示寬螢幕比例 */
+            border: 1px solid rgba(161, 196, 212, 0.4);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        /* 質感說明的文字修飾 */
+        .art-title-block {
+            border-left: 3px solid var(--primary-color);
+            padding-left: 15px;
+        }
+
+        .art-title-block h3 {
+            font-size: 24px;
+            letter-spacing: 1px;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .art-title-block span {
+            font-size: 13px;
+            color: var(--primary-color);
+            opacity: 0.8;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* 橫向迷你附屬子圖流 */
+        .art-sub-flow {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .art-thumb-node {
+            flex: 1;
+            aspect-ratio: 4 / 3;
+            font-size: 11px;
+            border-radius: 4px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .art-thumb-node:hover {
+            opacity: 1;
+        }
+
+        /* ----------------------------------
+         * 作品展示通用網格 (平面、插畫、動畫主卡)
+         * ---------------------------------- */
+
+/* ✨【核心修正】作品展示網格：完美平分左右兩欄，並解除內層的寬度擠壓限制 */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 嚴格限制左右各佔 50% */
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* ✨【核心修正】確保圖片卡片與文字區塊最小寬度為 0，允許它們完美平分縮小，不再爆開 */
+        .work-card, 
+        .works-grid > div {
+            width: 100%;
+            min-width: 0; 
+        }
+
+        .work-main-img {
+            width: 100%;
+            aspect-ratio: 16/10;
+        }
+
+        .work-sub-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;      /* 三個小縮圖之間的左右間距 */
+            margin-top: 20px; /* ✨ 關鍵修正：把小縮圖與上方的大作品主圖優雅地推開，虛線就不會黏在一起了！ */
+        }
+
+        .work-thumb {
+            aspect-ratio: 4/3;
+            font-size: 12px;
+        }
+        
+
+        /* ----------------------------------
+         * 04 動畫新擴充：翻頁式原畫展示區架構 (Slider)
+         * ---------------------------------- */
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            border: 2px solid var(--primary-color);
+            margin-bottom: 15px;
+            background-color: rgba(0,0,0,0.2);
+        }
+
+        .slider-container {
+            display: flex;
+            width: 600%; /* 6張原畫 */
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            width: 16.6666%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide .placeholder-img {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: transparent;
+        }
+
+        /* 翻頁箭頭控制鈕 */
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(43, 54, 67, 0.8);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            z-index: 10;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .slider-arrow:hover {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+        }
+
+        .arrow-left { left: 15px; }
+        .arrow-right { right: 15px; }
+
+        /* 翻頁小圓點導航 */
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 35px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(161, 196, 212, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        /* ----------------------------------
+         * 04 動畫新擴充：15張分鏡獨立網格系統 (Grid)
+         * ---------------------------------- */
+        .storyboard-grid-system {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 電腦版優雅平鋪 5 欄 */
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .storyboard-card {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .storyboard-img-box {
+            width: 100%;
+            aspect-ratio: 16/9; /* 標準分鏡紙黃金分割比例 */
+            font-size: 13px;
+        }
+
+        .storyboard-label {
+            font-size: 12px;
+            text-align: center;
+            color: #a1c4d4;
+            opacity: 0.8;
+            padding: 2px 0;
+        }
+
+        /* ----------------------------------
+         * 燈箱彈出視窗（Lightbox）樣式
+         * ---------------------------------- */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 30, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85%;
+            width: 850px;
+            aspect-ratio: 16/10;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 30px rgba(161, 196, 212, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-overlay.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-close-btn {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: var(--primary-color);
+            font-size: 40px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            user-select: none;
+        }
+
+        .lightbox-close-btn:hover {
+            transform: scale(1.2);
+        }
+
+        /* ----------------------------------
+         * 響應式手機版樣式 (RWD)
+         * ---------------------------------- */
+        @media (max-width: 768px) {
+            header { padding: 0 20px; }
+            .menu-toggle { display: flex; }
+
+            nav {
+                position: fixed;
+                top: 70px;
+                left: 100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: var(--bg-color);
+                z-index: 999;
+                transition: left 0.4s cubic-bezier(0.77,0.2,0.05,1.0);
+            }
+
+            nav.active { left: 0; }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                gap: 40px;
+            }
+
+            nav ul li { opacity: 0; transform: translateY(20px); }
+            nav.active ul li { animation: fadeInUp 0.4s ease forwards; }
+
+            nav.active ul li:nth-child(1) { animation-delay: 0.1s; }
+            nav.active ul li:nth-child(2) { animation-delay: 0.2s; }
+            nav.active ul li:nth-child(3) { animation-delay: 0.3s; }
+            nav.active ul li:nth-child(4) { animation-delay: 0.4s; }
+
+            .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+            .menu-toggle.open span:nth-child(2) { opacity: 0; }
+            .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(6px, -7px); }
+
+            .hero h1 { font-size: 40px; }
+            .hero-title-box { padding: 20px 30px; }
+
+            .profile-grid, .works-grid, .more-gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+/* 💡【解決圖三右側衝出問題】不要鎖死固定像素，改用 Grid 來做手機橫向並排 */
+            .profile-left {
+                display: grid;
+                grid-template-columns: 3.5fr 6.5fr; /* 完美比例分配：左頭貼 35%，右文字 65% */
+                gap: 15px;
+                width: 100%;
+            }
+
+            /* 💡【解決頭貼變形】交給 grid 與 aspect-ratio 自動處理，大小隨螢幕流動縮放 */
+            .profile-avatar {
+                width: 100% !important;
+                height: auto !important;
+                aspect-ratio: 1/1 !important;
+                border-radius: 12px;
+                font-size: 14px;
+            }
+
+            /* 💡【解決聯絡資訊溢出】自適應填滿右側 Grid */
+            .profile-info {
+                width: 100% !important;
+                font-size: 13px;
+                line-height: 1.5;
+                padding: 12px !important;
+            }
+
+            /* ✨ 手機版滿版展示自動降級為單欄，避免擁擠爆出 */
+            .graphic-showcase-container { gap: 60px; }
+            .graphic-art-row, 
+            .graphic-art-row.reverse,
+            .graphic-art-row.full-flow {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+            .graphic-art-media, .graphic-art-desc {
+                width: 100% !important;
+                grid-column: span 12 !important;
+            }
+            .graphic-art-row.full-flow .graphic-art-desc {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .works-grid {
+                grid-template-columns: 1fr;
+                gap: 35px;
+                margin-bottom: 70px; 
+            }
+
+            /* 💡【解決圖三技能框溢出問題】4欄均分，寬度設為 100%，絕不推擠出去 */
+            .skills-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+                width: 100%;
+            }
+
+            /* ✨ 【新修改】手機版「查看更多插畫」全面改成 2 欄網格(Grid)呈現 */
+@media (max-width: 768px) {
+    .more-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+            /* 手機版分鏡縮減欄位，方便單手滑動 */
+            .storyboard-grid-system {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .slider-arrow { width: 35px; height: 35px; font-size: 16px; }
+            .lightbox-close-btn { top: 15px; right: 20px; font-size: 35px; }
+            .lightbox-content { width: 95%; }
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .placeholder-img img, 
+.art-main-img img, 
+.work-main-img img, 
+.gallery-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 關鍵：確保圖片填滿且不變形 */
+    display: block;
+}
+
+.lightbox {
+    display: none; /* 預設隱藏 */
+    position: fixed;
+    z-index: 9999;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    justify-content: center;
+    align-items: center;
+}
+.lightbox img {
+    max-width: 90%;
+    max-height: 80%;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+.close-lightbox {
+    position: absolute;
+    top: 20px; right: 30px;
+    color: white; font-size: 40px; cursor: pointer;
+}
+
+    </style>
+</head>
+
+<!-- 燈箱區塊 -->
+<div id="lightbox" class="lightbox">
+    <span class="close-lightbox">&times;</span>
+    <img src="" alt="放大預覽" id="lightbox-img">
+</div>
+
+<body>
+    <header>
+        <div class="logo">PORTFOLIO</div>
+        <div class="menu-toggle" id="mobile-menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav id="nav-menu">
+            <ul>
+                <li><a href="#about"><div class="star-decor"></div>關於我</a></li>
+                <li><a href="#graphic"><div class="star-decor"></div>平面設計</a></li>
+                <li><a href="#illustration"><div class="star-decor"></div>動漫插畫</a></li>
+                <li><a href="#animation"><div class="star-decor"></div>動畫製作</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-title-box">
+            <h1>PORT<br>FOLIO</h1>
+            <p>藍乙甄 個人作品集</p>
+            <div style="margin-top: 20px;">
+                <div class="star-decor"></div>
+                <div class="star-decor" style="transform: scale(1.5);"></div>
+                <div class="star-decor"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="about">
+        <h2 class="section-title"><span class="num">01</span> 個人簡介 <div class="star-decor"></div></h2>
+        <div class="profile-grid">
+            <div class="profile-left">
+                <div class="profile-avatar">
+            <img src="images/avatar.jpg" alt="藍乙甄 大頭照" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+                <div class="placeholder-text profile-info">
+                    <strong>【聯絡資訊】</strong><br>
+                    姓名：藍乙甄 / Lan Yi-Zhen<br>
+                    學歷：元智大學資訊傳播學系設計組<br>
+                    電話：0901-051-194<br>
+                    信箱：a97008a@gmail.com
+                </div>
+            </div>
+            <div class="profile-right" style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="placeholder-text">
+                    <strong>【關於我】</strong><br>
+                    我來自元智大學資訊傳播學系設計組，具備藝術設計與資訊傳播的跨領域背景，擅長將細膩的繪畫美學融入數位媒體。對於遊戲原畫與動漫插畫具備高度熱忱，能捕捉角色神韻，性格穩重且重視規範，自主策劃過多幅節慶賀圖，從構圖、線稿到上色的完整流程。在創作中追求邏輯與美感的平衡，致力於透過視覺設計傳遞深刻的情感價值
+                </div>
+                <div class="placeholder-text">
+                    <strong>【校園經歷】</strong><br>
+                    • 2023年9月-2024年7月：就讀元智大學藝術與設計系，學習天馬行空的創意發想，以及創作表達個人作品。<br>
+                    • 2024年7月-至今：轉入元智大學資訊傳播學系設計組，拓展多媒體整合能力，在課程中學習到關於產品平面設計、3D建模、動畫分鏡與繪製、剪輯、2Dlive 等製作技巧。
+                </div>
+                <div>
+                    <strong style="color: var(--primary-color); display: block; margin-bottom: 10px;">【專業技能】</strong>
+                    <div class="skills-grid">
+                        <div class= "placeholder-img skill-icon-placeholder"><img src="images/ps.png" alt="PS"></div>
+                        <div class="placeholder-img skill-icon-placeholder"><img src="images/ai.png" alt="AI"></div>
+                        <div class="placeholder-img skill-icon-placeholder"><img src="images/id.png" alt="Id"></div>
+                        <div class="placeholder-img skill-icon-placeholder"><img src="images/ae.png" alt="Ae"></div>
+                        <div class="placeholder-img skill-icon-placeholder"><img src="images/csp.png" alt="CSP"></div>
+                        <div class="placeholder-img skill-icon-placeholder"><img src="images/procreate.png" alt="Practice"></div>
+                        <div class="placeholder-img skill-icon-placeholder"><img src="images/pd.png" alt="威力導演"></div>
+                        <div class="placeholder-img skill-icon-placeholder"><img src="images/maya.png" alt="maya"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- ----------------------------------------------------
+02 平面設計區塊 (更新版：四個作品結構)
+---------------------------------------------------- -->
+    <section class="container" id="graphic">
+        <h2 class="section-title"><span class="num">02</span> 平面設計 <div class="star-decor"></div></h2>
+        
+        <div class="graphic-showcase-container">
+            
+            <!-- 作品一：點線面圖騰纏繞畫 (單張滿版) -->
+            <div class="graphic-art-row fade-in-section full-flow">
+            <div class="placeholder-img art-main-img lightbox-trigger">
+                <img src="images/mockup_4.jpg" alt="點線面圖騰纏繞畫">
+            </div>
+                <div class="graphic-art-desc">
+                    <div class="art-title-block">
+                        <h3>點線面圖騰纏繞畫</h3>
+                        <span>Graphic Design • 01</span>
+                    </div>
+                    <div class="placeholder-text">透過細膩的幾何點線面纏繞，建構出抽象的視覺圖騰。此作品強調線條的流動感與畫面結構的平衡，展現純粹的構成美學。</div>
+                </div>
+            </div>
+
+            <!-- 作品二：外神系列造型繪製 (交錯式) -->
+            <div class="graphic-art-row reverse fade-in-section">
+                <div class="graphic-art-media  lightbox-trigger">
+                    <div class="placeholder-img art-main-img">
+                        <img src="images/123k.jpg" alt="外神形象造型繪製">
+                    </div>
+                </div>
+                <div class="graphic-art-desc">
+                    <div class="art-title-block">
+                        <h3>外神系列造型繪製</h3>
+                        <span>Character Design • 02</span>
+                    </div>
+                    <div class="placeholder-text">運用正方形、圓形、三角形為基礎設計出圖案。參考自洛夫克拉夫特（Lovecraft）小說中的外神形象。</div>
+                    <div class="placeholder-text" style="padding:12px; font-size:14px;"><strong>使用工具：</strong>Adobe Illustrator (Ai)</div>
+                </div>
+            </div>
+<!-- ----------------------------------------------------
+作品 3：Icon 設計 (大圖 + 中等長方圖 + 小圖)
+---------------------------------------------------- -->
+<div class="graphic-art-row fade-in-section">
+    <div class="graphic-art-media lightbox-trigger">
+        <div class="placeholder-img art-main-img"><img src="images/Mockup_2.jpg" alt="ICON設計系列"></div>
+    </div>
+    
+    <div class="graphic-art-desc">
+        <div class="art-title-block">
+            <h3>Icon 設計系列</h3>
+            <span>System Design • 03</span>
+        </div>
+        
+        <div style="width: 100%; max-width: 200px;">
+            <div class="placeholder-img lightbox-trigger" style="aspect-ratio: 1/1;"><img src="images/Mockup_3.jpg" alt="ICON設計"></div>
+        </div>
+
+        <div class="placeholder-text" style="margin-top: 10px;">
+            改編自IKEA ICON<br>此系列 Icon 設計上結合IKEA LOGO經典色調，由亮色來強調指示的重點部分，適用於指引路線指標。
+        </div>
+    </div>
+</div>
+<!-- ----------------------------------------------------
+作品 4：平面設計構成原理 (大圖 + 4張小圖)
+---------------------------------------------------- -->
+        <div class="graphic-art-row full-flow fade-in-section">
+            <div class="graphic-art-media lightbox-trigger">
+                <div class="placeholder-img art-main-img-tall"><img src="images/Mockup1.jpg" alt="平面設計構成原理"></div>
+            </div>
+            <div class="graphic-art-desc">
+                <div class="art-title-block">
+                    <h3>平面設計構成原理</h3>
+                    <span>Theory & Practice • 04</span>
+                </div>
+                <!-- 調整區塊：4 張小圖 -->
+                <div class="art-sub-flow" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                    <div class="placeholder-img lightbox-trigger art-thumb-node" style="aspect-ratio: 1/1;"><img src="images/4-11.jpg" alt="平面設計構成原理"></div>
+                    <div class="placeholder-img lightbox-trigger art-thumb-node" style="aspect-ratio: 1/1;"><img src="images/4-12.jpg" alt="平面設計構成原理"></div>
+                    <div class="placeholder-img lightbox-trigger art-thumb-node" style="aspect-ratio: 1/1;"><img src="images/4-13.jpg" alt="平面設計構成原理"></div>
+                    <div class="placeholder-img lightbox-trigger art-thumb-node" style="aspect-ratio: 1/1;"><img src="images/4-14.jpg" alt="平面設計構成原理"></div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </section>
+
+    <section class="container" id="illustration">
+        <h2 class="section-title"><span class="num">03</span> 動漫插畫 <div class="star-decor"></div></h2>
+        <h3 class="subsection-title"><div class="star-decor" style="transform: scale(0.8);"></div> 精選展示 (Featured Works)</h3>
+
+        <div class="works-grid">
+            <div class="work-card">
+                <div class="placeholder-img work-main-img lightbox-trigger"><img src="images/hero.JPG" alt="掌中無界限"></div>
+                <div class="work-sub-images">
+                    <div class="placeholder-img lightbox-trigger work-thumb"><img src="images/hero-1.JPG" alt="草圖完稿"></div>
+                    <div class="placeholder-img lightbox-trigger work-thumb"><img src="images/hero-2.JPG" alt="草圖"></div>
+                    <div class="placeholder-img lightbox-trigger work-thumb"><img src="images/hero-3.JPG" alt="草圖"></div>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div class="placeholder-text" style="height: 100%;">
+                    <h3>【金犢獎競賽作品 - 掌中無界線】</h3><br>
+                    <p><strong>設計理念：</strong>運用分割畫面的效果，繪製出人與遊戲次元的連結感。展現勝負無界線、力量掌握在手中的視覺張力。</p><br>
+                    <p><strong>使用工具：</strong>Clip Studio Paint / Photoshop</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="works-grid">
+            <div class="work-card">
+                <div class="placeholder-img work-main-img lightbox-trigger"><img src="images/house.JPG" alt="馬年賀圖"></div>
+                <div class="work-sub-images">
+                    <div class="placeholder-img lightbox-trigger work-thumb"><img src="images/house1.JPG" alt="草圖完稿"></div>
+                    <div class="placeholder-img lightbox-trigger work-thumb"><img src="images/house2.JPG" alt="草圖"></div>
+                    <div class="placeholder-img lightbox-trigger work-thumb"><img src="images/house3.JPG" alt="草圖"></div>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div class="placeholder-text" style="height: 100%;">
+                    <h3>2026 謹賀新年 — 馬年新年賀圖</h3><br>
+                    <p><strong>設計理念：</strong>自主策劃的節慶賀圖展示。包含細緻的角色外型設定與背景巨大月光的氛圍融合，呈現奇幻唯美的光影渲染。</p><br>
+                    <p><strong>角色參考：</strong>原神 - 茲白</p>
+                </div>
+            </div>
+        </div>
+
+
+<div class="more-works-btn-container">
+            <button class="custom-btn" id="toggle-gallery-btn">
+                <span class="star-decor"></span>
+                <span id="btn-text">點擊查看更多作品</span>
+                <span class="star-decor"></span>
+            </button>
+        </div>
+
+        <div class="gallery-view-section" id="gallery-section">
+            <h3 class="subsection-title" style="color: var(--primary-color);"><div class="star-decor" style="transform: scale(0.8);"></div> 完整插畫藝廊</h3>
+<div class="more-gallery-grid">
+    <div class="gallery-card">
+        <div class="placeholder-img gallery-img lightbox-trigger">
+            <img src="images/snake.JPG" alt="蛇年賀圖">
+        </div>
+        <div class="placeholder-text" style="font-size:14px; padding:10px; text-align:center;">
+            <strong>蛇年賀圖</strong>
+        </div>
+    </div>
+
+    <div class="gallery-card">
+        <div class="placeholder-img gallery-img lightbox-trigger">
+            <img src="images/tiger.JPG" alt="虎年賀圖">
+        </div>
+        <div class="placeholder-text" style="font-size:14px; padding:10px; text-align:center;">
+            <strong>虎年賀圖</strong>
+        </div>
+    </div>
+    
+    <div class="gallery-card">
+        <div class="placeholder-img gallery-img lightbox-trigger">
+            <img src="images/new.JPG" alt="蛇年賀圖">
+        </div>
+        <div class="placeholder-text" style="font-size:14px; padding:10px; text-align:center;">
+            <strong>元旦賀圖</strong>
+        </div>
+    </div>
+
+    <div class="gallery-card">
+        <div class="placeholder-img gallery-img lightbox-trigger">
+            <img src="images/love.JPG" alt="虎年賀圖">
+        </div>
+        <div class="placeholder-text" style="font-size:14px; padding:10px; text-align:center;">
+            <strong>情人節賀圖</strong>
+        </div>
+    </div>
+    
+    <div class="gallery-card">
+        <div class="placeholder-img gallery-img lightbox-trigger">
+            <img src="images/helloween.JPG" alt="蛇年賀圖">
+        </div>
+        <div class="placeholder-text" style="font-size:14px; padding:10px; text-align:center;">
+            <strong>萬聖魔女</strong>
+        </div>
+    </div>
+
+    <div class="gallery-card">
+        <div class="placeholder-img gallery-img lightbox-trigger">
+            <img src="images/friend.jpg" alt="虎年賀圖">
+        </div>
+        <div class="placeholder-text" style="font-size:14px; padding:10px; text-align:center;">
+            <strong>好朋友</strong>
+        </div>
+    </div>
+</div>
+        <!-- 底部收合按鈕 -->
+            <div class="footer-close-container">
+                <button class="custom-btn collapse-btn-footer" id="footer-close-btn">
+                    <span class="star-decor"></span>
+                    <span>收合作品藝廊</span>
+                    <span class="star-decor"></span>
+                </button>
+            </div>
+    </section>
+
+    <!-- ----------------------------------
+  作品 5：動畫製作
+    ---------------------------------- -->
+
+    <section class="container" id="animation">
+        <h2 class="section-title"><span class="num">04</span> 動畫製作 <div class="star-decor"></div></h2>
+        
+<div class="works-grid">
+            <div class="work-card">
+                <div class="placeholder-img work-main-img" style="aspect-ratio: 16/9;">
+                    <video width="100%" height="100%" controls poster="images/8(1).jpg">
+                        <source src="images/8animation.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="work-sub-images">
+                    <div class="placeholder-img lightbox-trigger work-thumb"><img src="images/room.jpg" alt="場景美術設計"></div>
+                    <div class="placeholder-img lightbox-trigger work-thumb"><img src="images/role1.jpg" alt="角色原畫設定"></div>
+                    <div class="placeholder-img lightbox-trigger work-thumb"><img src="images/role.jpg" alt="角色草圖"></div>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div class="placeholder-text" style="height: 100%;">
+                    <h3>【2D 動畫 - 一攤渾水】</h3><br>
+                    <p><strong>故事大綱：</strong>一名喝醉酒的男大生被一攤水絆倒，又誤把現實幻化成奇幻冒險，最終意外打破電視。</p><br>
+                    <p><strong>團隊人員：</strong>藍乙甄、余傑克、許芮慈、黃于芳</p>
+                    <p><strong>團隊負責：</strong>分鏡草圖、動態分鏡、著色、剪輯</p>
+                    <p><strong>作品規格：</strong>16秒 / 解析度:1920*1080(1080p) / 24 fps 手繪動態</p>
+                    <p><strong>使用軟體：</strong>Photoshop / Clip Studio Paint / PowerDirector</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="subsection-title">
+            <div class="star-decor" style="transform: scale(0.8);"></div> 原畫
+        </h3>
+        
+        <div class="slider-wrapper">
+            <div class="slider-arrow arrow-left" id="slide-prev">&lt;</div>
+            <div class="slider-arrow arrow-right" id="slide-next">&gt;</div>
+            
+            <div class="slider-container" id="slider-container">
+                <div class="slide"><div class="placeholder-img lightbox-trigger"><img src="images/2(1).jpg" alt="原畫1"></div></div>
+                <div class="slide"><div class="placeholder-img lightbox-trigger"><img src="images/3.jpg" alt="原畫2"></div></div>
+                <div class="slide"><div class="placeholder-img lightbox-trigger"><img src="images/4 (1).jpg" alt="原畫3"></div></div>
+                <div class="slide"><div class="placeholder-img lightbox-trigger"><img src="images/8(1).jpg" alt="原畫4"></div></div>
+                <div class="slide"><div class="placeholder-img lightbox-trigger"><img src="images/9.jpg" alt="原畫5"></div></div>
+                <div class="slide"><div class="placeholder-img lightbox-trigger"><img src="images/10.jpg" alt="原畫6"></div></div>
+            </div>
+        </div>
+
+        <div class="slider-dots" id="slider-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <h3 class="subsection-title">
+            <div class="star-decor" style="transform: scale(0.8);"></div> 分鏡
+        </h3>
+
+        <div class="storyboard-grid-system">
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story1.jpg" alt="分鏡1"></div>
+                <div class="storyboard-label">分鏡 01</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story2.jpg" alt="分鏡2"></div>
+                <div class="storyboard-label">分鏡 02</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story3.jpg" alt="分鏡3"></div>
+                <div class="storyboard-label">分鏡 03</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story4.jpg" alt="分鏡4"></div>
+                <div class="storyboard-label">分鏡 04</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story5.jpg" alt="分鏡5"></div>
+                <div class="storyboard-label">分鏡 05</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story6.jpg" alt="分鏡6"></div>
+                <div class="storyboard-label">分鏡 06</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story7.jpg" alt="分鏡7"></div>
+                <div class="storyboard-label">分鏡 07</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story8.jpg" alt="分鏡8"></div>
+                <div class="storyboard-label">分鏡 08</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story9.jpg" alt="分鏡9"></div>
+                <div class="storyboard-label">分鏡 09</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story10.jpg" alt="分鏡10"></div>
+                <div class="storyboard-label">分鏡 10</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story11.jpg" alt="分鏡11"></div>
+                <div class="storyboard-label">分鏡 11</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story12.jpg" alt="分鏡12"></div>
+                <div class="storyboard-label">分鏡 12</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story13.jpg" alt="分鏡13"></div>
+                <div class="storyboard-label">分鏡 13</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story14.jpg" alt="分鏡14"></div>
+                <div class="storyboard-label">分鏡 14</div>
+            </div>
+            <div class="storyboard-card">
+                <div class="placeholder-img lightbox-trigger storyboard-img-box"><img src="images/story15.jpg" alt="分鏡15"></div>
+                <div class="storyboard-label">分鏡 15</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="lightbox-overlay" id="lightbox-overlay">
+        <div class="lightbox-close-btn" id="lightbox-close">&times;</div>
+        <div class="lightbox-content placeholder-img" id="lightbox-zoom-box">
+            內容放大檢視中
+        </div>
+    </div>
+
+    <script>
+        // 1. 手機版導覽選單
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        const navLinks = document.querySelectorAll('#nav-menu ul li a');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('open');
+            navMenu.classList.toggle('active');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuBtn.classList.remove('open');
+                navMenu.classList.remove('active');
+            });
+        });
+
+// 2. 「更多作品」切換展示與收合邏輯
+        const toggleBtn = document.getElementById('toggle-gallery-btn');
+        const footerCloseBtn = document.getElementById('footer-close-btn');
+        const gallerySection = document.getElementById('gallery-section');
+        const btnText = document.getElementById('btn-text');
+
+        // 收合藝廊的核心共用函式
+        function collapseGallery() {
+            gallerySection.classList.remove('show');
+            btnText.innerText = "點擊查看更多作品";
+            // 平滑捲動回主要插畫區塊頂部
+            document.getElementById('illustration').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 展開藝廊的核心共用函式
+        function expandGallery() {
+            gallerySection.classList.add('show');
+            btnText.innerText = "收合作品藝廊";
+            setTimeout(() => {
+                gallerySection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 150);
+        }
+
+        // 頂部主要控制鈕點擊
+        toggleBtn.addEventListener('click', () => {
+            if (gallerySection.classList.contains('show')) {
+                collapseGallery();
+            } else {
+                expandGallery();
+            }
+        });
+
+        // ✨【新修改】底部「(收合作品藝廊)」快捷按鈕點擊事件
+        footerCloseBtn.addEventListener('click', () => {
+            collapseGallery();
+        });
+
+        // 3. 全新擴充功能：翻頁式原畫核心 JavaScript 引擎
+        const container = document.getElementById('slider-container');
+        const prevBtn = document.getElementById('slide-prev');
+        const nextBtn = document.getElementById('slide-next');
+        const dots = document.querySelectorAll('#slider-dots .dot');
+        let currentSlide = 0;
+        const totalSlides = 6;
+
+        function updateSlider(index) {
+            currentSlide = index;
+            // 計算向左平移百分比
+            container.style.transform = `translateX(-${currentSlide * 16.6666}%)`;
+            
+            // 更新下方小圓點狀態
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentSlide].classList.add('active');
+        }
+
+        nextBtn.addEventListener('click', () => {
+            let nextIndex = (currentSlide + 1) % totalSlides;
+            updateSlider(nextIndex);
+        });
+
+        prevBtn.addEventListener('click', () => {
+            let prevIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlider(prevIndex);
+        });
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                updateSlider(index);
+            });
+        });
+
+        // 內建智慧自動輪播功能（每 4 秒自動下一張，有人滑動時暫停可自由擴充）
+        setInterval(() => {
+            let nextIndex = (currentSlide + 1) % totalSlides;
+            updateSlider(nextIndex);
+        }, 4000);
+
+
+        // // 4. 全方位大圖查看功能（智慧燈箱 Lightbox 升級版）
+        // const lightboxOverlay = document.getElementById('lightbox-overlay');
+        // const lightboxClose = document.getElementById('lightbox-close');
+        // const lightboxZoomBox = document.getElementById('lightbox-zoom-box');
+        
+        // // 智慧型選擇器：包含原畫、分鏡網格在內的所有可放大圖卡元件
+        // const targetImages = document.querySelectorAll('.placeholder-img:not(.lightbox-content):not(.skill-icon-placeholder)');
+
+        // targetImages.forEach(imgBox => {
+        //     imgBox.addEventListener('click', () => {
+        //         // 清理多餘的輔助說明文字，提取最純粹的作品名稱
+        //         let imgInfoText = imgBox.innerText.replace('(點擊放大)', '').replace('[點擊放大]', '').trim();
+                
+        //         lightboxZoomBox.innerHTML = `<div><strong style="font-size:26px; color:#a1c4d4; letter-spacing:1px;">${imgInfoText}</strong><br><br><span style="font-size:14px; opacity:0.6; display:block; border-top:1px dashed #a1c4d4; padding-top:15px;">[ 100% 滿版無損大圖渲染檢視中 ]</span></div>`;
+        //         lightboxOverlay.classList.add('active');
+        //     });
+        // });
+
+        // // 關閉控制
+        // lightboxClose.addEventListener('click', () => lightboxOverlay.classList.remove('active'));
+        // lightboxOverlay.addEventListener('click', (e) => {
+        //     if (e.target === lightboxOverlay) lightboxOverlay.classList.remove('active');
+        // });
+        // document.addEventListener('keydown', (e) => {
+        //     if (e.key === 'Escape' && lightboxOverlay.classList.contains('active')) lightboxOverlay.classList.remove('active');
+        // });
+
+// 確保這個腳本在 HTML 載入完成後執行
+document.addEventListener('DOMContentLoaded', () => {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    // 監聽所有帶有 lightbox-trigger 的容器內部的 img
+    document.querySelectorAll('.lightbox-trigger img').forEach(img => {
+        img.style.cursor = 'pointer'; // 讓滑鼠移過去變成手掌
+        img.addEventListener('click', (e) => {
+            lightbox.style.display = 'flex';
+            lightboxImg.src = e.target.src; // 抓取被點擊圖片的來源
+        });
+    });
+
+    // 點擊背景關閉
+    lightbox.addEventListener('click', () => {
+        lightbox.style.display = 'none';
+    });
+});
+        
+
+// ✨ 5. 滾動偵測與淡入/淡出切換控制引擎
+const fadeSections = document.querySelectorAll('.fade-in-section');
+
+const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // 當進入視窗，加上 class 觸發淡入
+            entry.target.classList.add('is-visible');
+        } else {
+            // 當離開視窗，移除 class 觸發淡出（若設定 transition 則會呈現淡出效果）
+            entry.target.classList.remove('is-visible');
+        }
+    });
+}, {
+    threshold: 0.1, // 門檻值設為 0.1，只要有一點點進入或離開就觸發
+    rootMargin: "0px 0px -50px 0px"
+});
+
+fadeSections.forEach(section => {
+    scrollObserver.observe(section);
+});
+    </script>
+    </section>
+    </section>
+</body>
+</html>
