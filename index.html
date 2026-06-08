@@ -916,6 +916,35 @@
     .graphic-art-row.full-flow {
         gap: 20px !important;
     }
+
+}@media (max-width: 768px) {
+    /* 強制所有作品區塊在手機上垂直排列 */
+    .graphic-art-row {
+        flex-direction: column !important;
+        display: flex !important;
+        margin-bottom: 40px !important; /* 作品之間的距離 */
+    }
+
+    /* 處理圖片區域 */
+    .graphic-art-media {
+        width: 100% !important;
+        margin-bottom: 15px !important; /* 圖片與下方文字框的區隔 */
+    }
+
+    /* 處理文字區域 */
+    .graphic-art-desc {
+        width: 100% !important;
+        padding: 0 !important;
+        margin-top: 10px !important;
+    }
+
+    /* 確保這三個小格子（角色原畫、分鏡、場景）在手機上也能對齊 */
+    .sub-works-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 強制維持三格 */
+        gap: 10px;
+        margin-top: 15px;
+    }
 }
 
             /* 手機版分鏡縮減欄位，方便單手滑動 */
