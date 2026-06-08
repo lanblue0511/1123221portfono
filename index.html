@@ -916,7 +916,6 @@
     .graphic-art-row.full-flow {
         gap: 20px !important;
     }
-
 }@media (max-width: 768px) {
     /* 強制所有作品區塊在手機上垂直排列 */
     .graphic-art-row {
@@ -944,6 +943,33 @@
         grid-template-columns: repeat(3, 1fr); /* 強制維持三格 */
         gap: 10px;
         margin-top: 15px;
+    }
+
+    /* 1. 確保外層網格容器不會撐開寬度 */
+    .sub-works-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 強制三等分 */
+        gap: 8px; /* 縮小一點間距，避免手機版太擠 */
+        width: 100%;
+    }
+
+    /* 2. 強制圖片框為正方形 (aspect-ratio: 1/1) */
+    .sub-works-grid .placeholder-img {
+        width: 100%;
+        aspect-ratio: 1 / 1; /* 正方形關鍵設定 */
+        overflow: hidden;
+        border: 1px dashed var(--primary-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* 3. 強制圖片填滿並居中，不超出邊界 */
+    .sub-works-grid .placeholder-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 自動裁切保持比例 */
+        display: block;
     }
 }
 
