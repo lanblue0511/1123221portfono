@@ -867,19 +867,29 @@
     }
 
     /* 4. 動漫插畫與動畫製作主要作品區塊優化 */
-    .works-grid {
+.works-grid {
         grid-template-columns: 1fr;
-        gap: 25px;
+        gap: 30px;
+    }
+
+    .work-card {
+        width: 100%;
     }
 
     .work-sub-images {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-top: 15px;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        margin-top: 12px !important;
     }
 
     .work-thumb {
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 4 / 3 !important;
+        height: auto !important;
+    }
+
+    /* 讓右側文字區塊更穩定 */
+    .works-grid > div:not(.work-card) {
+        width: 100% !important;
     }
 
     /* 動畫製作區塊額外間距 */
