@@ -1019,6 +1019,37 @@
     color: white; font-size: 40px; cursor: pointer;
 }
 
+/* 確保 Media Query 放在 CSS 的最下方 */
+@media (max-width: 768px) {
+    /* 1. 強制讓網格永遠維持 3 欄，且不會溢出螢幕 */
+    .sub-works-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 10px !important;
+        width: 100% !important;
+        margin-top: 15px !important;
+    }
+
+    /* 2. 強制讓每個方格變成正方形 */
+    .sub-works-grid .placeholder-img {
+        width: 100% !important;
+        aspect-ratio: 1 / 1 !important; /* 正方形核心設定 */
+        overflow: hidden !important;
+        border: 1px dashed var(--primary-color) !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    /* 3. 確保內部圖片完全貼合正方形 */
+    .sub-works-grid .placeholder-img img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+    }
+}
+
     </style>
 </head>
 
