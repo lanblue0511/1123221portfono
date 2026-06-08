@@ -940,42 +940,35 @@
     }
 
     /* 確保這三個小格子（角色原畫、分鏡、場景）在手機上也能對齊 */
-    .sub-works-grid {
+    /* .sub-works-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 強制維持三格 */
+        grid-template-columns: repeat(3, 1fr); 
         gap: 10px;
         margin-top: 15px;
-    }
+    } */
 
 }
 
-/* 確保 Media Query 放在 CSS 的最下方 */
 @media (max-width: 768px) {
-    /* 1. 讓容器變成水平滾動模式 */
-    .work-sub-images {
-        display: flex !important;       /* 讓內部圖片水平排列 */
+    /* 1. 將舊的 grid 網格廢除，改為 flex 水平捲動 */
+    .sub-works-grid {
+        display: flex !important;           /* 轉為 flex 橫向排列 */
         flex-direction: row !important;
-        overflow-x: auto !important;    /* 允許水平捲動 */
-        overflow-y: hidden !important;  /* 禁止垂直捲動 */
-        gap: 10px !important;           /* 圖片間距 */
-        width: 100% !important;
-        padding-bottom: 10px !important;/* 防止滾動條遮住圖片底部 */
-        -webkit-overflow-scrolling: touch; /* 讓手機滑動體驗更滑順 */
+        grid-template-columns: none !important; /* 強制取消網格列設定 */
+        overflow-x: auto !important;        /* 關鍵：開啟水平滾動 */
+        overflow-y: hidden !important;      /* 關閉垂直滾動 */
+        width: 100% !important;             /* 寬度限制在螢幕內 */
+        gap: 15px !important;               /* 圖片間距 */
+        padding-bottom: 10px !important;    /* 留空間給捲軸 */
+        -webkit-overflow-scrolling: touch;  /* 手機滑動更順暢 */
     }
 
-    /* 2. 強制圖片框為正方形，且給予固定寬度 */
-    .work-sub-images .work-thumb {
-        flex: 0 0 30% !important;       /* 每個框佔容器 30% 寬度，這樣一次能看見約 3 個 */
-        aspect-ratio: 1 / 1 !important;  /* 強制正方形 */
-        min-width: 80px !important;     /* 設定最小寬度，避免縮太小 */
-        border: 1px dashed var(--primary-color) !important;
-    }
-
-    /* 3. 確保圖片填滿正方形 */
-    .work-sub-images .work-thumb img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
+    /* 2. 重新定義圖片格子的尺寸 */
+    .sub-works-grid .placeholder-img {
+        flex: 0 0 35% !important;        /* 每個圖佔寬 35%，讓螢幕能剛好看到 2.5 個 */
+        aspect-ratio: 1 / 1 !important;   /* 強制正方形 */
+        min-width: 100px !important;      /* 防止太小 */
+        margin: 0 !important;             /* 清除舊的邊距 */
     }
 }
 
