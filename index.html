@@ -877,16 +877,31 @@
         width: 100%;
     }
 
-    .work-sub-images {
-        grid-template-columns: repeat(3, 1fr) ;
-        gap: 6px ;
-        margin-top: 12px ;
-    }
+/* 動漫插畫區塊 - 三張小圖手機版優化 */
+.work-sub-images {
+    display: flex !important;
+    grid-template-columns: none !important;   /* 取消 grid */
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    gap: 12px;
+    margin-top: 12px;
+    padding-bottom: 8px;           /* 增加底部空間讓捲軸更好看 */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;         /* Firefox */
+}
 
-    .work-thumb {
-        aspect-ratio: 1 / 1 ;
-        height: auto ;
-    }
+.work-sub-images::-webkit-scrollbar {
+    height: 6px;
+}
+
+.work-sub-images .work-thumb,
+.work-sub-images .placeholder-img {
+    flex: 0 0 110px !important;   /* 固定寬度，可依需求調整 100px~120px */
+    width: 110px !important;
+    aspect-ratio: 4 / 3 !important;   /* 保持原本比例，或改 1/1 看喜好 */
+    max-height: none !important;
+    box-sizing: border-box;
+}
 
     /* 讓右側文字區塊更穩定 */
     .works-grid > div:not(.work-card) {
