@@ -945,31 +945,37 @@
         margin-top: 15px;
     }
 
-    /* 1. 確保外層網格容器不會撐開寬度 */
+}
+
+/* 確保 Media Query 放在 CSS 的最下方 */
+@media (max-width: 768px) {
+    /* 1. 強制讓網格永遠維持 3 欄，且不會溢出螢幕 */
     .sub-works-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 強制三等分 */
-        gap: 8px; /* 縮小一點間距，避免手機版太擠 */
-        width: 100%;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 10px !important;
+        width: 100% !important;
+        margin-top: 15px !important;
     }
 
-    /* 2. 強制圖片框為正方形 (aspect-ratio: 1/1) */
+    /* 2. 強制讓每個方格變成正方形 */
     .sub-works-grid .placeholder-img {
-        width: 100%;
-        aspect-ratio: 1 / 1; /* 正方形關鍵設定 */
-        overflow: hidden;
-        border: 1px dashed var(--primary-color);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        width: 100% !important;
+        aspect-ratio: 1 / 1 !important; /* 正方形核心設定 */
+        overflow: hidden !important;
+        border: 1px dashed var(--primary-color) !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        max-height: 135px;
     }
 
-    /* 3. 強制圖片填滿並居中，不超出邊界 */
+    /* 3. 確保內部圖片完全貼合正方形 */
     .sub-works-grid .placeholder-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* 自動裁切保持比例 */
-        display: block;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
     }
 }
 
@@ -1017,37 +1023,6 @@
     position: absolute;
     top: 20px; right: 30px;
     color: white; font-size: 40px; cursor: pointer;
-}
-
-/* 確保 Media Query 放在 CSS 的最下方 */
-@media (max-width: 768px) {
-    /* 1. 強制讓網格永遠維持 3 欄，且不會溢出螢幕 */
-    .sub-works-grid {
-        display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 10px !important;
-        width: 100% !important;
-        margin-top: 15px !important;
-    }
-
-    /* 2. 強制讓每個方格變成正方形 */
-    .sub-works-grid .placeholder-img {
-        width: 100% !important;
-        aspect-ratio: 1 / 1 !important; /* 正方形核心設定 */
-        overflow: hidden !important;
-        border: 1px dashed var(--primary-color) !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-    }
-
-    /* 3. 確保內部圖片完全貼合正方形 */
-    .sub-works-grid .placeholder-img img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        display: block !important;
-    }
 }
 
     </style>
