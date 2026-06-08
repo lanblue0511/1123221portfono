@@ -720,7 +720,7 @@
         }
 
         /* ----------------------------------
-         * 響應式手機版樣式 (RWD)
+         * 響應式手機版樣式 (RWD) - 已整理
          * ---------------------------------- */
         @media (max-width: 768px) {
             header { padding: 0 20px; }
@@ -767,24 +767,20 @@
                 gap: 30px;
             }
 
-/* 💡【解決圖三右側衝出問題】不要鎖死固定像素，改用 Grid 來做手機橫向並排 */
             .profile-left {
                 display: grid;
-                grid-template-columns: 3.5fr 6.5fr; /* 完美比例分配：左頭貼 35%，右文字 65% */
+                grid-template-columns: 3.5fr 6.5fr;
                 gap: 15px;
                 width: 100%;
             }
 
-            /* 💡【解決頭貼變形】交給 grid 與 aspect-ratio 自動處理，大小隨螢幕流動縮放 */
             .profile-avatar {
                 width: 100% !important;
                 height: auto !important;
                 aspect-ratio: 1/1 !important;
                 border-radius: 12px;
-                font-size: 14px;
             }
 
-            /* 💡【解決聯絡資訊溢出】自適應填滿右側 Grid */
             .profile-info {
                 width: 100% !important;
                 font-size: 13px;
@@ -792,8 +788,8 @@
                 padding: 12px !important;
             }
 
-            /* ✨ 手機版滿版展示自動降級為單欄，避免擁擠爆出 */
             .graphic-showcase-container { gap: 60px; }
+
             .graphic-art-row, 
             .graphic-art-row.reverse,
             .graphic-art-row.full-flow {
@@ -801,10 +797,12 @@
                 flex-direction: column;
                 gap: 20px;
             }
+
             .graphic-art-media, .graphic-art-desc {
                 width: 100% !important;
                 grid-column: span 12 !important;
             }
+
             .graphic-art-row.full-flow .graphic-art-desc {
                 display: flex;
                 flex-direction: column;
@@ -813,213 +811,56 @@
 
             .works-grid {
                 grid-template-columns: 1fr;
-                gap: 35px;
+                gap: 40px;
                 margin-bottom: 70px; 
             }
 
-            /* 💡【解決圖三技能框溢出問題】4欄均分，寬度設為 100%，絕不推擠出去 */
             .skills-grid {
                 grid-template-columns: repeat(4, 1fr);
-                gap: 10px;
+                gap: 12px;
                 width: 100%;
             }
 
-            
-            /* ✨ 【新修改】手機版「查看更多插畫」全面改成 2 欄網格(Grid)呈現 */
-@media (max-width: 768px) {
+            /* ==================== 重點修正：三張小圖 ==================== */
+            .work-sub-images {
+                display: flex !important;
+                grid-template-columns: none !important;
+                overflow-x: auto !important;
+                flex-wrap: nowrap !important;
+                gap: 12px;
+                margin-top: 15px;
+                padding-bottom: 12px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
 
-    /* 1. 選單優化：完整覆蓋 + 字體加大 */
-    nav {
-        height: calc(100vh - 70px);
-        overflow-y: auto;
-    }
-    nav ul {
-        gap: 50px;
-    }
-    nav ul li a {
-        font-size: 22px !important;
-        font-weight: bold;
-    }
+            .work-sub-images::-webkit-scrollbar {
+                height: 6px;
+            }
 
-    /* 2. 軟體圖標 → 正方形 + 不裁切 */
-    .skills-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-    }
-    .skill-icon-placeholder {
-        aspect-ratio: 1 / 1 !important;
-    }
-    .skill-icon-placeholder img {
-        object-fit: contain !important;
-    }
+            .work-sub-images .work-thumb,
+            .work-sub-images .placeholder-img {
+                flex: 0 0 115px !important;     /* 可調整這個數字：110~130px */
+                width: 115px !important;
+                aspect-ratio: 4 / 3 !important;
+                max-height: none !important;
+            }
 
-    /* 3. 【重點修正】平面設計構成原理的四張小圖 - 解決超出邊界與擠壓問題 */
-    .art-sub-flow {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 10px !important;
-        margin-top: 12px !important;
-        width: 100% !important;
-    }
-    .art-thumb-node {
-        aspect-ratio: 1 / 1 !important;
-        max-height: 135px !important;     /* 關鍵：限制高度，防止擠到下面區塊 */
-        width: 100% !important;
-        box-sizing: border-box !important;
-    }
+            /* 確保右側文字不會被推擠 */
+            .works-grid > div:not(.work-card) {
+                width: 100% !important;
+                margin-top: 20px;
+            }
 
-    /* 4. 動漫插畫與動畫製作主要作品區塊優化 */
-.works-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
+            .container {
+                padding: 50px 15px 80px;
+            }
 
-    .work-card {
-        width: 100%;
-    }
+            .more-gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
 
-/* 動漫插畫區塊 - 三張小圖手機版優化 */
-.work-sub-images {
-    display: flex !important;
-    grid-template-columns: none !important;   /* 取消 grid */
-    overflow-x: auto !important;
-    flex-wrap: nowrap !important;
-    gap: 12px;
-    margin-top: 12px;
-    padding-bottom: 8px;           /* 增加底部空間讓捲軸更好看 */
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;         /* Firefox */
-}
-
-.work-sub-images::-webkit-scrollbar {
-    height: 6px;
-}
-
-.work-sub-images .work-thumb,
-.work-sub-images .placeholder-img {
-    flex: 0 0 110px !important;   /* 固定寬度，可依需求調整 100px~120px */
-    width: 110px !important;
-    aspect-ratio: 4 / 3 !important;   /* 保持原本比例，或改 1/1 看喜好 */
-    max-height: none !important;
-    box-sizing: border-box;
-}
-
-.work-sub-images {
-        display: flex !important;
-        overflow-x: auto !important;
-        flex-wrap: nowrap !important;
-        gap: 12px;
-        margin-top: 12px;
-        padding-bottom: 10px;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .work-sub-images .placeholder-img,
-    .work-sub-images .work-thumb {
-        flex: 0 0 110px !important;
-        aspect-ratio: 4 / 3 !important;
-    }
-
-    /* 確保文字區塊不會被圖片推擠 */
-    .works-grid > div:not(.work-card) {
-        width: 100% !important;
-        margin-top: 15px;
-    }
-
-    /* 讓右側文字區塊更穩定 */
-    .works-grid > div:not(.work-card) {
-        width: 100% ;
-    }
-
-    /* 動畫製作區塊額外間距 */
-    #animation .works-grid .work-card {
-        margin-bottom: 25px;
-    }
-
-    /* 通用手機優化 */
-    .container {
-        padding: 50px 15px 80px;
-    }
-
-    .more-gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
-
-    .placeholder-text {
-        font-size: 15px;
-        padding: 14px;
-    }
-
-    /* 額外防止平面設計區塊溢出 */
-    .graphic-art-row.full-flow {
-        gap: 20px !important;
-    }
-    
-}@media (max-width: 768px) {
-    /* 強制所有作品區塊在手機上垂直排列 */
-    .graphic-art-row {
-        flex-direction: column !important;
-        display: flex !important;
-        margin-bottom: 40px !important; /* 作品之間的距離 */
-    }
-
-    /* 處理圖片區域 */
-    .graphic-art-media {
-        width: 100% !important;
-        margin-bottom: 15px !important; /* 圖片與下方文字框的區隔 */
-    }
-
-    /* 處理文字區域 */
-    .graphic-art-desc {
-        width: 100% !important;
-        padding: 0 !important;
-        margin-top: 10px !important;
-    }
-
-    /* 確保這三個小格子（角色原畫、分鏡、場景）在手機上也能對齊 */
-    /* .sub-works-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 10px;
-        margin-top: 15px;
-    } */
-
-}
-
-/* --- 電腦版維持原樣 (假設你原本是用 grid) --- */
-.sub-works-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
-
-/* --- 手機版強制覆寫 (關鍵在這裡！) --- */
-@media (max-width: 768px) {
-    .sub-works-grid {
-        /* 1. 斷開與 grid 的連結 */
-        display: flex !important; 
-        grid-template-columns: none !important;
-        
-        /* 2. 開啟水平滾動的核心 */
-        overflow-x: auto !important;
-        flex-wrap: nowrap !important; /* 強制不換行 */
-        
-        /* 3. 調整間距 */
-        gap: 15px !important;
-        padding-bottom: 10px !important;
-        width: 100% !important;
-    }
-
-    /* 4. 強制每個圖片框在手機上呈現固定寬度，不要隨著 grid 變形 */
-    .sub-works-grid .placeholder-img {
-        flex: 0 0 100px !important; /* 每個框強制寬 100px */
-        aspect-ratio: 1 / 1 !important; /* 正方形 */
-        margin: 0 !important;
-        box-sizing: border-box !important;
-    }
-}
-
-            /* 手機版分鏡縮減欄位，方便單手滑動 */
             .storyboard-grid-system {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
@@ -1029,6 +870,8 @@
             .lightbox-close-btn { top: 15px; right: 20px; font-size: 35px; }
             .lightbox-content { width: 95%; }
         }
+
+
 
         @keyframes fadeInUp {
             to { opacity: 1; transform: translateY(0); }
