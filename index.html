@@ -949,26 +949,36 @@
 
 }
 
+/* --- 電腦版維持原樣 (假設你原本是用 grid) --- */
+.sub-works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+/* --- 手機版強制覆寫 (關鍵在這裡！) --- */
 @media (max-width: 768px) {
-    /* 1. 將舊的 grid 網格廢除，改為 flex 水平捲動 */
     .sub-works-grid {
-        display: flex !important;           /* 轉為 flex 橫向排列 */
-        flex-direction: row !important;
-        grid-template-columns: none !important; /* 強制取消網格列設定 */
-        overflow-x: auto !important;        /* 關鍵：開啟水平滾動 */
-        overflow-y: hidden !important;      /* 關閉垂直滾動 */
-        width: 100% !important;             /* 寬度限制在螢幕內 */
-        gap: 15px !important;               /* 圖片間距 */
-        padding-bottom: 10px !important;    /* 留空間給捲軸 */
-        -webkit-overflow-scrolling: touch;  /* 手機滑動更順暢 */
+        /* 1. 斷開與 grid 的連結 */
+        display: flex !important; 
+        grid-template-columns: none !important;
+        
+        /* 2. 開啟水平滾動的核心 */
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important; /* 強制不換行 */
+        
+        /* 3. 調整間距 */
+        gap: 15px !important;
+        padding-bottom: 10px !important;
+        width: 100% !important;
     }
 
-    /* 2. 重新定義圖片格子的尺寸 */
+    /* 4. 強制每個圖片框在手機上呈現固定寬度，不要隨著 grid 變形 */
     .sub-works-grid .placeholder-img {
-        flex: 0 0 35% !important;        /* 每個圖佔寬 35%，讓螢幕能剛好看到 2.5 個 */
-        aspect-ratio: 1 / 1 !important;   /* 強制正方形 */
-        min-width: 100px !important;      /* 防止太小 */
-        margin: 0 !important;             /* 清除舊的邊距 */
+        flex: 0 0 100px !important; /* 每個框強制寬 100px */
+        aspect-ratio: 1 / 1 !important; /* 正方形 */
+        margin: 0 !important;
+        box-sizing: border-box !important;
     }
 }
 
