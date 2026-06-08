@@ -815,10 +815,44 @@
                 margin-bottom: 70px; 
             }
 
+/* ==================== 技能圖標修正 ==================== */
             .skills-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 12px;
                 width: 100%;
+            }
+
+            .skill-icon-placeholder {
+                aspect-ratio: 1 / 1 !important;
+                width: 100% !important;
+                height: auto !important;
+                padding: 8px !important;   /* 增加內距讓圖標呼吸 */
+            }
+
+            .skill-icon-placeholder img {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: contain !important;   /* 關鍵：保持原本比例不變形 */
+            }
+
+            /* ==================== 平面設計構成原理 4張小圖修正 ==================== */
+            .art-sub-flow {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;   /* 手機版改 2 欄 */
+                gap: 12px !important;
+                margin-top: 15px !important;
+                width: 100% !important;
+            }
+
+            .art-thumb-node {
+                aspect-ratio: 1 / 1 !important;     /* 強制正方形 */
+                width: 100% !important;
+                max-height: 140px !important;       /* 限制高度防止溢出 */
+                box-sizing: border-box !important;
+            }
+
+            .art-thumb-node img {
+                object-fit: cover !important;
             }
 
             /* ==================== 重點修正：三張小圖 ==================== */
@@ -842,7 +876,7 @@
             .work-sub-images .placeholder-img {
                 flex: 0 0 115px !important;     /* 可調整這個數字：110~130px */
                 width: 115px !important;
-                aspect-ratio: 4 / 3 !important;
+                aspect-ratio: 1 / 1 !important;
                 max-height: none !important;
             }
 
