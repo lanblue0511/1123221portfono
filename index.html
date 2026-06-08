@@ -1451,28 +1451,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
-    const body = document.body; // 抓取 body
 
-    // 點擊圖片打開燈箱時
+    // 監聽所有帶有 lightbox-trigger 的容器內部的 img
     document.querySelectorAll('.lightbox-trigger img').forEach(img => {
-        img.style.cursor = 'pointer';
+        img.style.cursor = 'pointer'; // 讓滑鼠移過去變成手掌
         img.addEventListener('click', (e) => {
             lightbox.style.display = 'flex';
-            lightboxImg.src = e.target.src;
-            
-            // 關鍵：鎖定背景滑動
-            body.style.overflow = 'hidden'; 
-            body.style.height = '100vh';
+            lightboxImg.src = e.target.src; // 抓取被點擊圖片的來源
         });
     });
 
-    // 點擊背景關閉燈箱時
+    // 點擊背景關閉
     lightbox.addEventListener('click', () => {
         lightbox.style.display = 'none';
-        
-        // 關鍵：恢復背景滑動
-        body.style.overflow = 'auto';
-        body.style.height = 'auto';
     });
 });
         
