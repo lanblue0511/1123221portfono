@@ -36,7 +36,7 @@
     .skill-icon-placeholder img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         display: block;
     }
 
@@ -545,32 +545,31 @@
 .work-sub-images {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
+        gap: 16px;
         margin-top: 20px;
     }
 
-    .work-thumb,
+.work-thumb,
     .work-sub-images .placeholder-img {
         aspect-ratio: 4 / 3;
-        box-sizing: border-box;
         overflow: hidden;
     }
 
-    .art-sub-flow {
+.art-sub-flow {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        margin-top: 10px;
+        gap: 16px;
+        margin-top: 15px;
     }
 
-    .art-thumb-node {
+.art-thumb-node {
         aspect-ratio: 1 / 1;
-        box-sizing: border-box;
         overflow: hidden;
     }
 
-    .skill-icon-placeholder {
+.skill-icon-placeholder {
         aspect-ratio: 1 / 1;
+        padding: 12px;                 /* 增加內距，讓圖標不會太滿 */
         box-sizing: border-box;
     }
         
@@ -756,6 +755,7 @@
         @media (max-width: 768px) {
             header { padding: 0 20px; }
             .menu-toggle { display: flex; }
+        }
 
             nav {
                 position: fixed;
@@ -866,14 +866,14 @@
 
             /* ==================== 平面設計構成原理 4張小圖修正 ==================== */
 .art-sub-flow {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 12px !important;
-        }
-
-        .art-thumb-node {
-            max-height: 140px !important;
-        }
+     grid-template-columns: repeat(2, 1fr) !important; 
+     gap: 12px !important; 
     }
+
+        .art-thumb-node
+         {
+             max-height: 135px !important;
+         }
 
             .art-thumb-node img {
                 object-fit: cover !important;
@@ -885,7 +885,6 @@
             overflow-x: auto !important;
             flex-wrap: nowrap !important;
             gap: 12px;
-            padding-bottom: 12px;
         }
 
             .work-sub-images::-webkit-scrollbar {
@@ -929,49 +928,42 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-/* ----------------------------------
-     * 平板 (Tablet) - 包含橫向模式
-     * ---------------------------------- */
-    @media (min-width: 769px) and (max-width: 1024px) {
+@media (min-width: 769px) and (max-width: 1024px) {
         .container { padding: 80px 40px; }
 
-        /* 技能圖標 - 強制正方形 */
+        /* 技能圖標 - 增加空間 */
         .skills-grid {
             grid-template-columns: repeat(6, 1fr);
-            gap: 18px;
+            gap: 20px;
         }
         .skill-icon-placeholder {
             aspect-ratio: 1 / 1 !important;
-            padding: 10px !important;
-        }
-        .skill-icon-placeholder img {
-            object-fit: contain !important;
+            padding: 14px !important;
         }
 
-        /* 三張小圖 - 平板維持 grid */
+        /* 三張小圖 */
         .work-sub-images {
             display: grid !important;
             grid-template-columns: repeat(3, 1fr) !important;
-            gap: 22px;
+            gap: 20px;
         }
         .work-thumb,
         .work-sub-images .placeholder-img {
             aspect-ratio: 4 / 3 !important;
         }
 
-        /* 平面設計構成原理 4 張小圖 */
+        /* 平面設計 4 張小圖 */
         .art-sub-flow {
             grid-template-columns: repeat(4, 1fr) !important;
-            gap: 20px !important;
+            gap: 18px !important;
         }
         .art-thumb-node {
             aspect-ratio: 1 / 1 !important;
-            max-height: 165px !important;
+            max-height: 155px !important;     /* 降低高度，避免填太滿 */
         }
 
         .works-grid { gap: 45px; }
         .more-gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 28px; }
-        .storyboard-grid-system { grid-template-columns: repeat(4, 1fr); gap: 20px; }
     }
 
     @keyframes fadeInUp {
