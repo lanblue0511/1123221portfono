@@ -874,10 +874,17 @@
             max-height: 140px !important;
         }
 
-                    .storyboard-grid-system {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
+            .storyboard-grid-system {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* 當 body 帶有這個 class 時，強制禁止滑動 */
+body.no-scroll {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+}
     }
 
             .art-thumb-node img {
